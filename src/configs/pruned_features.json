@@ -1,0 +1,129 @@
+{
+  "created": "2026-10-03",
+  "n_models_for_gain": 11,
+  "gain_drop_threshold_pct": 0.05,
+  "dropped_features": [
+    "local_month",
+    "flight_type_code",
+    "FLIGHT_TYPE_flt",
+    "metar_wind_gust_kt",
+    "nm_matched",
+    "metar_flight_cat_ord",
+    "diversion_flag",
+    "flight_rule_ifr",
+    "local_weekend"
+  ],
+  "dropped_cumulative_gain_pct": 0.1308561017700232,
+  "kept_features": [
+    "anchor_aobt_sec",
+    "sched_deviation_min",
+    "anchor_eobt_sec",
+    "anchor_iobt_sec",
+    "STAND_mvt",
+    "RUNWAY_mvt",
+    "anchor_lobt_sec",
+    "AIRCRAFT_TYPE_mvt",
+    "AIRCRAFT_OPERATOR_flt",
+    "aoht_vs_eobt",
+    "metar_tmpc",
+    "dest_distance_km",
+    "local_hour_sin",
+    "hour_sin",
+    "ADEP_mvt",
+    "operator_enc",
+    "metar_wind_dir",
+    "eobt_sched_delta_sec",
+    "stand_runway_interaction",
+    "pre_pushback_delay",
+    "queue_proxy_30min",
+    "runway_dep_count_15min",
+    "relative_busyness",
+    "hour_cos",
+    "hourly_arr_actual",
+    "hourly_dep_sched",
+    "hourly_dep_gap",
+    "metar_dwpc",
+    "hourly_dep_actual",
+    "metar_relh",
+    "local_hour_cos",
+    "stand_zone",
+    "arr_count_5min",
+    "runway_arr_count_15min",
+    "dep_count_5min",
+    "metar_alti_in",
+    "minutes_since_metar",
+    "runway_heading",
+    "dep_count_60min",
+    "metar_wind_kt",
+    "metar_vis_miles",
+    "metar_ceiling_ft",
+    "arr_count_30min",
+    "dep_count_15min",
+    "month",
+    "dep_count_30min",
+    "dow",
+    "arr_count_60min",
+    "arr_count_15min",
+    "local_dow",
+    "market_segment_code",
+    "wake_cat_ordinal",
+    "MARKET_SEGMENT_flt"
+  ],
+  "verdict": "REJECT",
+  "baseline": {
+    "overall": 333.81480341900766,
+    "season": 455.1096641818691
+  },
+  "pruned": {
+    "overall": 334.72958663094244,
+    "season": 458.2840978842123,
+    "delta_overall": -0.9147832119347754,
+    "delta_season": -3.174433702343208
+  },
+  "pruned_plus_affine_s50_lot_out": {
+    "overall": 332.6154425477948,
+    "season": 457.4704004833039
+  },
+  "full_affine_airport": {
+    "EDDF": [
+      1.0090821927818374,
+      -7.854496291253781
+    ],
+    "EDDM": [
+      1.0116059760435712,
+      -9.23125940822706
+    ],
+    "EGLL": [
+      1.0018200383153606,
+      -2.197355099552169
+    ],
+    "EHAM": [
+      1.004896834547556,
+      -4.646003509213756
+    ],
+    "LEBL": [
+      1.0084121271851858,
+      -9.155620144135924
+    ],
+    "LEMD": [
+      1.0061997191793446,
+      -7.922073946225964
+    ],
+    "LFPG": [
+      1.0108269227279294,
+      -11.82011670899044
+    ],
+    "LIRF": [
+      1.1000171263420215,
+      -112.01006761916142
+    ],
+    "LSZH": [
+      1.005213204985805,
+      -3.954030514918486
+    ],
+    "LTFM": [
+      1.0541329699993263,
+      -55.23829736174821
+    ]
+  }
+}

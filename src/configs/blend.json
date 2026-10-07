@@ -1,0 +1,348 @@
+{
+  "created": "2026-10-07",
+  "smoke": false,
+  "target_treatment": "E-winsorize-errors",
+  "component_configs": {
+    "tuned_lgbm": {
+      "family": "lgbm",
+      "mode": "global",
+      "feature_set": "D4",
+      "target_treatment": "E-winsorize-errors",
+      "seed": 42,
+      "n_estimators": 500,
+      "early_stopping_rounds": 50,
+      "params": {
+        "learning_rate": 0.06234791410449235,
+        "num_leaves": 221,
+        "max_depth": -1,
+        "min_child_samples": 12,
+        "reg_alpha": 0.1,
+        "reg_lambda": 1.0,
+        "seed": 42,
+        "deterministic": true,
+        "force_row_wise": true,
+        "verbose": -1,
+        "num_threads": 0,
+        "feature_fraction": 0.9189697907327101,
+        "bagging_fraction": 0.8232974425395796,
+        "bagging_freq": 1
+      }
+    },
+    "per_airport_lgbm": {
+      "family": "lgbm",
+      "mode": "per_airport",
+      "feature_set": "D4",
+      "target_treatment": "E-winsorize-errors",
+      "seed": 42,
+      "n_estimators": 500,
+      "early_stopping_rounds": 50,
+      "params": {
+        "objective": "regression",
+        "metric": "rmse",
+        "learning_rate": 0.05,
+        "num_leaves": 63,
+        "max_depth": -1,
+        "min_child_samples": 50,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "reg_alpha": 0.1,
+        "reg_lambda": 1.0,
+        "seed": 42,
+        "deterministic": true,
+        "force_row_wise": true,
+        "verbose": -1,
+        "num_threads": 0
+      }
+    },
+    "xgb": {
+      "family": "xgb",
+      "mode": "global",
+      "feature_set": "D4",
+      "target_treatment": "E-winsorize-errors",
+      "seed": 42,
+      "n_estimators": 500,
+      "early_stopping_rounds": 50,
+      "params": {
+        "objective": "reg:squarederror",
+        "eval_metric": "rmse",
+        "learning_rate": 0.05,
+        "max_depth": 6,
+        "min_child_weight": 5,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "reg_alpha": 0.1,
+        "reg_lambda": 1.0,
+        "seed": 42,
+        "nthread": 0,
+        "verbosity": 0
+      }
+    },
+    "cat": {
+      "family": "cat",
+      "mode": "global",
+      "feature_set": "D4",
+      "target_treatment": "E-winsorize-errors",
+      "seed": 42,
+      "n_estimators": 500,
+      "early_stopping_rounds": 50,
+      "params": {
+        "learning_rate": 0.05,
+        "depth": 6,
+        "l2_leaf_reg": 3.0,
+        "random_seed": 42,
+        "verbose": false,
+        "iterations": 300
+      }
+    }
+  },
+  "oof_rmse": {
+    "tuned_lgbm": 337.1573484997056,
+    "per_airport_lgbm": 335.0145806845007,
+    "xgb": 352.2222698052827,
+    "cat": 362.01729725826846
+  },
+  "residual_correlation": {
+    "tuned_lgbm": {
+      "tuned_lgbm": 0.9999999999999998,
+      "per_airport_lgbm": 0.9648425106172259,
+      "xgb": 0.94719361419634,
+      "cat": 0.9230509310371314
+    },
+    "per_airport_lgbm": {
+      "tuned_lgbm": 0.9648425106172259,
+      "per_airport_lgbm": 0.9999999999999998,
+      "xgb": 0.9350951321296228,
+      "cat": 0.9165221119788004
+    },
+    "xgb": {
+      "tuned_lgbm": 0.94719361419634,
+      "per_airport_lgbm": 0.9350951321296228,
+      "xgb": 0.9999999999999999,
+      "cat": 0.9685840596448552
+    },
+    "cat": {
+      "tuned_lgbm": 0.9230509310371314,
+      "per_airport_lgbm": 0.9165221119788004,
+      "xgb": 0.9685840596448552,
+      "cat": 1.0
+    }
+  },
+  "simple_average": {
+    "weights": {
+      "tuned_lgbm": 0.25,
+      "per_airport_lgbm": 0.25,
+      "xgb": 0.25,
+      "cat": 0.25
+    },
+    "rmse": 339.05084532220036
+  },
+  "subset_search": [
+    {
+      "subset": [
+        "tuned_lgbm",
+        "per_airport_lgbm"
+      ],
+      "weights": {
+        "tuned_lgbm": 0.40938414578960414,
+        "per_airport_lgbm": 0.590615854210396
+      },
+      "rmse": 333.02077029519126
+    },
+    {
+      "subset": [
+        "tuned_lgbm",
+        "per_airport_lgbm",
+        "xgb"
+      ],
+      "weights": {
+        "tuned_lgbm": 0.4093840907409356,
+        "per_airport_lgbm": 0.5906159092590644,
+        "xgb": 1.766612195322016e-17
+      },
+      "rmse": 333.0207702951913
+    },
+    {
+      "subset": [
+        "tuned_lgbm",
+        "per_airport_lgbm",
+        "cat"
+      ],
+      "weights": {
+        "tuned_lgbm": 0.4093841533928825,
+        "per_airport_lgbm": 0.590615846607117,
+        "cat": 4.690801349799926e-16
+      },
+      "rmse": 333.0207702951913
+    },
+    {
+      "subset": [
+        "tuned_lgbm",
+        "per_airport_lgbm",
+        "xgb",
+        "cat"
+      ],
+      "weights": {
+        "tuned_lgbm": 0.409384114369754,
+        "per_airport_lgbm": 0.5906158856302458,
+        "xgb": 9.064867448585195e-20,
+        "cat": 1.7360611758336984e-16
+      },
+      "rmse": 333.0207702951913
+    },
+    {
+      "subset": [
+        "per_airport_lgbm",
+        "xgb"
+      ],
+      "weights": {
+        "per_airport_lgbm": 0.8786948999159221,
+        "xgb": 0.12130510008407794
+      },
+      "rmse": 334.6714999073989
+    },
+    {
+      "subset": [
+        "per_airport_lgbm",
+        "xgb",
+        "cat"
+      ],
+      "weights": {
+        "per_airport_lgbm": 0.8786948831982745,
+        "xgb": 0.12130511680172539,
+        "cat": 1.7577076513562317e-16
+      },
+      "rmse": 334.6714999073989
+    },
+    {
+      "subset": [
+        "per_airport_lgbm",
+        "cat"
+      ],
+      "weights": {
+        "per_airport_lgbm": 0.948613059992806,
+        "cat": 0.05138694000719397
+      },
+      "rmse": 334.93189628133536
+    },
+    {
+      "subset": [
+        "per_airport_lgbm"
+      ],
+      "weights": {
+        "per_airport_lgbm": 1.0
+      },
+      "rmse": 335.0145806845007
+    },
+    {
+      "subset": [
+        "tuned_lgbm",
+        "xgb"
+      ],
+      "weights": {
+        "tuned_lgbm": 0.9066678670860358,
+        "xgb": 0.09333213291396421
+      },
+      "rmse": 336.9923569794131
+    },
+    {
+      "subset": [
+        "tuned_lgbm",
+        "xgb",
+        "cat"
+      ],
+      "weights": {
+        "tuned_lgbm": 0.9066678520794142,
+        "xgb": 0.0933321479205858,
+        "cat": 0.0
+      },
+      "rmse": 336.9923569794131
+    },
+    {
+      "subset": [
+        "tuned_lgbm",
+        "cat"
+      ],
+      "weights": {
+        "tuned_lgbm": 0.9478933244154105,
+        "cat": 0.05210667558458947
+      },
+      "rmse": 337.079211691246
+    },
+    {
+      "subset": [
+        "tuned_lgbm"
+      ],
+      "weights": {
+        "tuned_lgbm": 1.0
+      },
+      "rmse": 337.1573484997056
+    },
+    {
+      "subset": [
+        "xgb",
+        "cat"
+      ],
+      "weights": {
+        "xgb": 0.9313942910653326,
+        "cat": 0.06860570893466748
+      },
+      "rmse": 352.1680881346105
+    },
+    {
+      "subset": [
+        "xgb"
+      ],
+      "weights": {
+        "xgb": 1.0
+      },
+      "rmse": 352.2222698052827
+    },
+    {
+      "subset": [
+        "cat"
+      ],
+      "weights": {
+        "cat": 1.0
+      },
+      "rmse": 362.01729725826846
+    }
+  ],
+  "selected": {
+    "weights": {
+      "tuned_lgbm": 0.40938414578960414,
+      "per_airport_lgbm": 0.590615854210396
+    },
+    "active_weights": {
+      "tuned_lgbm": 0.40938414578960414,
+      "per_airport_lgbm": 0.590615854210396
+    },
+    "n_active": 2,
+    "rmse": 333.02077029519126,
+    "subset": [
+      "tuned_lgbm",
+      "per_airport_lgbm"
+    ],
+    "beats_best_single": true,
+    "best_single": {
+      "name": "per_airport_lgbm",
+      "rmse": 335.0145806845007
+    }
+  },
+  "full_retrain_rounds": {
+    "tuned_lgbm": 466,
+    "per_airport_lgbm": {
+      "EDDF": 372,
+      "EDDM": 340,
+      "EGLL": 312,
+      "EHAM": 337,
+      "LEBL": 200,
+      "LEMD": 188,
+      "LFPG": 262,
+      "LIRF": 170,
+      "LSZH": 190,
+      "LTFM": 414
+    },
+    "xgb": 499,
+    "cat": 299
+  }
+}

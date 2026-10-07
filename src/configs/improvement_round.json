@@ -1,0 +1,71 @@
+{
+  "created": "2026-10-07",
+  "source": "LOT-out on data/processed/oof_predictions.parquet",
+  "baseline_overall": 333.81480341900766,
+  "baseline_season": 455.1096641818691,
+  "candidates": {
+    "baseline_global": {
+      "overall": 333.81480341900766,
+      "delta_overall": 0.0,
+      "season": 455.1096641818691,
+      "delta_season": 0.0,
+      "verdict": "reference"
+    },
+    "v4_affine_s50": {
+      "overall": 331.2960679987573,
+      "delta_overall": 2.5187354202503798,
+      "season": 453.66634877143656,
+      "delta_season": 1.4433154104325467,
+      "verdict": "ACCEPT"
+    },
+    "affine_s25": {
+      "overall": 332.2971783818522,
+      "delta_overall": 1.517625037155483,
+      "season": 453.8800229792663,
+      "delta_season": 1.2296412026028065,
+      "verdict": "ACCEPT"
+    },
+    "affine_s75": {
+      "overall": 330.85488131839435,
+      "delta_overall": 2.959922100613312,
+      "season": 454.4884270237362,
+      "delta_season": 0.6212371581328853,
+      "verdict": "ACCEPT"
+    },
+    "iso_airport": {
+      "overall": 333.3946989984254,
+      "delta_overall": 0.4201044205822768,
+      "season": 461.8246030667121,
+      "delta_season": -6.714938884842979,
+      "verdict": "reject"
+    },
+    "iso_global": {
+      "overall": 333.216587987479,
+      "delta_overall": 0.5982154315286721,
+      "season": 461.70208805124815,
+      "delta_season": -6.592423869379047,
+      "verdict": "reject"
+    },
+    "decile_affine_ap": {
+      "overall": 330.9703799587562,
+      "delta_overall": 2.8444234602514484,
+      "season": 453.8885345583649,
+      "delta_season": 1.2211296235042255,
+      "verdict": "ACCEPT"
+    },
+    "qmap_airport": {
+      "overall": 646.499984274864,
+      "delta_overall": -312.68518085585634,
+      "season": 1094.3295343186346,
+      "delta_season": -639.2198701367655,
+      "verdict": "reject"
+    },
+    "cap_ap_p995": {
+      "overall": 395.8838926599232,
+      "delta_overall": -62.06908924091556,
+      "season": 544.773767998436,
+      "delta_season": -89.66410381656692,
+      "verdict": "reject"
+    }
+  }
+}

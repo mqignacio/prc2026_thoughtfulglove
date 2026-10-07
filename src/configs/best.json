@@ -1,0 +1,33 @@
+{
+  "family": "lgbm",
+  "seed": 42,
+  "target_treatment": "E-winsorize-errors",
+  "feature_set": "D4",
+  "params": {
+    "learning_rate": 0.06234791410449235,
+    "num_leaves": 221,
+    "max_depth": -1,
+    "min_child_samples": 12,
+    "reg_alpha": 0.1,
+    "reg_lambda": 1.0,
+    "seed": 42,
+    "deterministic": true,
+    "force_row_wise": true,
+    "verbose": -1,
+    "num_threads": 0,
+    "feature_fraction": 0.9189697907327101,
+    "bagging_fraction": 0.8232974425395796,
+    "bagging_freq": 1
+  },
+  "n_estimators": 500,
+  "early_stopping_rounds": 50,
+  "subsample_rmse_4fold": 328.93,
+  "full_cv_raw_rmse": 337.54,
+  "baseline_cv_raw_rmse": 338.56,
+  "delta_vs_baseline": -1.02,
+  "note": "Tuned LGBM beats baseline by 1.02s raw RMSE on full 12-fold CV. This is the production config.",
+  "production_serving": {
+    "blend_config": "blend.json",
+    "post_processing": "blend_postproc.json:mi2_affine_s50 (see blend.json post_processing)"
+  }
+}

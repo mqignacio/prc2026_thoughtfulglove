@@ -1,0 +1,132 @@
+{
+  "created": "2026-10-07",
+  "source": "leave-one-month-out on data/processed/oof_predictions.parquet",
+  "baseline": {
+    "overall": 333.02077029519126,
+    "season": 454.2544877020902,
+    "recorded_overall": 333.02077029519126
+  },
+  "candidates": {
+    "baseline_global": {
+      "overall": 333.02077029519126,
+      "season": 454.2544877020902,
+      "delta_overall": 0.0,
+      "delta_season": 0.0,
+      "n_params": 0,
+      "kind": "baseline",
+      "desc": "recorded global blend (reproduction gate)",
+      "verdict": "reference"
+    },
+    "mi1_weights": {
+      "overall": 333.60798460109726,
+      "season": 454.8603653659231,
+      "delta_overall": -0.5872143059060022,
+      "delta_season": -0.6058776638328709,
+      "n_params": 10,
+      "kind": "postproc",
+      "desc": "per-airport 2-component blend weights",
+      "verdict": "reject"
+    },
+    "mi2_affine": {
+      "overall": 330.7699867680014,
+      "season": 454.7165670352492,
+      "delta_overall": 2.250783527189867,
+      "delta_season": -0.46207933315901073,
+      "n_params": 20,
+      "kind": "postproc",
+      "desc": "per-airport affine recalibration of the blend",
+      "verdict": "reject"
+    },
+    "mi2_affine_s50": {
+      "overall": 331.0049571012425,
+      "season": 452.8983662414965,
+      "delta_overall": 2.015813193948759,
+      "delta_season": 1.3561214605937266,
+      "n_params": 20,
+      "kind": "postproc",
+      "desc": "per-airport affine, slope shrunk 50%",
+      "verdict": "ACCEPT"
+    },
+    "mi2_affine_rwy": {
+      "overall": 333.05694208960784,
+      "season": 459.6991722900719,
+      "delta_overall": -0.03617179441658891,
+      "delta_season": -5.444684587981669,
+      "n_params": null,
+      "kind": "postproc",
+      "desc": "per airport-runway affine recalibration",
+      "verdict": "reject"
+    },
+    "mi3_weights_affine": {
+      "overall": 331.344239060432,
+      "season": 455.27617575334926,
+      "delta_overall": 1.6765312347592385,
+      "delta_season": -1.0216880512590478,
+      "n_params": 30,
+      "kind": "postproc",
+      "desc": "per-airport weights + per-airport affine",
+      "verdict": "reject"
+    }
+  },
+  "accepted": {
+    "mi2_affine_s50": {
+      "overall": 331.0049571012425,
+      "season": 452.8983662414965,
+      "delta_overall": 2.015813193948759,
+      "delta_season": 1.3561214605937266,
+      "n_params": 20,
+      "kind": "postproc",
+      "desc": "per-airport affine, slope shrunk 50%",
+      "verdict": "ACCEPT"
+    }
+  },
+  "full_fit": {
+    "mi2_affine_s50": {
+      "type": "affine",
+      "shrink": 0.5,
+      "base": "global_blend",
+      "airport_affine": {
+        "EDDF": [
+          1.0077943090498116,
+          -6.854181897144031
+        ],
+        "EDDM": [
+          1.0112949579972959,
+          -9.107029539907671
+        ],
+        "EGLL": [
+          1.00163636580257,
+          -2.367971085614272
+        ],
+        "EHAM": [
+          1.0043752629767757,
+          -4.418296588502017
+        ],
+        "LEBL": [
+          1.0076830296758112,
+          -8.660732989748567
+        ],
+        "LEMD": [
+          1.006357119025958,
+          -7.25831265436716
+        ],
+        "LFPG": [
+          1.009754504012904,
+          -11.433526068524657
+        ],
+        "LIRF": [
+          1.0956059706380974,
+          -105.63481838883104
+        ],
+        "LSZH": [
+          1.004320362923135,
+          -3.27920611519653
+        ],
+        "LTFM": [
+          1.0543063942156103,
+          -53.87863318503469
+        ]
+      }
+    }
+  }
+}
