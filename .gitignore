@@ -178,6 +178,10 @@ submissions/*
 # parquet inside it, to keep the final payload tracked.
 !submissions/final/
 !submissions/final/*.parquet
+# Staging versions (final_v1, final_v2, ...) stay untracked: only the official
+# `thoughtful-glove_final.parquet` is archived. This rule must come AFTER the
+# negation above (last match wins).
+submissions/final/thoughtful-glove_final_v*.parquet
 resources/credentials.json
 # CatBoost training artifacts (Task 3.3)
 catboost_info/
@@ -186,3 +190,14 @@ logs/
 # Public-release staging area (Task 4.3) — a separate repo, built and pushed
 # from here; never part of the working tree's history.
 dist/
+
+# --- LaTeX build artifacts (doc/paper, added by Task 5.1) ---
+doc/paper/*.aux
+doc/paper/*.bbl
+doc/paper/*.bcf
+doc/paper/*.blg
+doc/paper/*.out
+doc/paper/*.run.xml
+doc/paper/*.log
+doc/paper/*.synctex.gz
+doc/paper/*.toc

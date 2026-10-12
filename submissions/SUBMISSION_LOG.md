@@ -13,6 +13,8 @@ Team: `thoughtful-glove` · Bucket: `opensky/prc-2026-thoughtful-glove` · Start
 | v3 | 10-03 | **blend** (Task 3.4): `tuned_lgbm` 0.4329 (global D4, `best.json`) + `per_airport_lgbm` 0.5671 (10 D4 models, family defaults) | 333.81 (blend OOF, all-2025; season-matched 455.11) | **401.73** | First **D4-feature** submission (62 features vs v1/v2's 21). Blend weights fit on OOF predictions only — leaderboard never used. Retrained on full 2025 at median fold `best_iteration`. 344,841 rows, 0 nulls, all finite, min floored to 1 s, no upper clip. **−94.99 s (−19.1%) vs v2.** Leaderboard is **−11.73% vs the season-matched 2025 CV comparator** (455.11 s) — favourable, no drift escalation. See "v3 — Blend" below. |
 | v4 | 10-03 | **same blend as v3** + per-airport affine recalibration (slope shrunk 50%, `mi2_affine_s50`) | 331.30 (LOT-out OOF, all-2025; season-matched 453.67) | **396.74** | Model unchanged from v3 — **serving-time post-processing only**, accepted by leave-one-month-out CV (overall −2.52 s, season-matched −1.44 s). 344,841 rows, 0 nulls, all finite, min floored to 1 s. **−4.99 s (−1.24%) vs v3.** Leaderboard −12.54% vs the season-matched CV analog. Feature pruning of the 9 lowest-gain features was **rejected** (degrades CV). See "v4" below. |
 | v5 | 10-07 | **same blend + FLIGHT_PREFIX feature** (airline code parsed from the flight number) + `mi2_affine_s50` | 331.01 (LOT-out OOF, all-2025; season-matched 452.90) | **392.59** | **FINAL SUBMISSION.** One new categorical feature (`FLIGHT_PREFIX`, 1,762 values) added to the D4 set (63 features total); blend weights and the affine recalibration refit. Every component improved: tuned 337.76→337.16, per-airport 336.12→335.01, xgb 354.31→352.22, cat 362.28→362.02. 344,841 rows, 0 nulls, all finite, min floored to 1 s. **−4.15 s (−1.05%) vs v4.** See "v5 — Final submission" below. |
+| v6 | 10-11 | **final-phase pipeline** (frozen v5 stack; features **rebuilt** from dithered `final_ranking.parquet`) + `mi2_affine_s50`, restricted to Jan/Jul | — (Jan/Jul 2025 analog, raw blend: 454.25) | **393.28** | **Validation-only (Q3-A).** Same frozen models, but features rebuilt from the final (dithered) files and predictions mapped to `submitting.parquet` order. **+0.69 s (+0.18%) vs v5 — no serving regression**, inside the 2% gate. See "v6 — Final-phase validation submission" below. |
+| **final** | 10-12 | **frozen v5 stack, final-phase serving pipeline** (`src/make_final_submission.py`, v1 lineage: features rebuilt from dithered `final_ranking.parquet`) + `mi2_affine_s50` | — (4-month 2025 analog, raw blend: 420.37) | **no leaderboard** (final files) | **THE FINAL SUBMISSION — 4 months (Jan/Feb/Jun/Jul 2026).** Task 19 verdict ACCEPT within-2025 but recommended v1 (transfer unsupported); D1 decision Option A = ship v1. 670,790 rows, SHA256 `e326deac…c632`. See "Final submission (Task 20)" below. |
 
 `src/make_submission.py` is the reusable generator for the single-model versions:
 `python src/make_submission.py --model <path> --version N` → `submissions/thoughtful-glove_vN.parquet`.
@@ -133,6 +135,70 @@ Refit blend (`tuned_lgbm` 0.4094 + `per_airport_lgbm` 0.5906): OOF **333.02** (�
 **Reproducibility:** `uv run python src/run_blend.py --phase oof --ignore-gate` → `--phase weights` → `uv run python src/run_micro_iterations.py` → `--phase serve --version 5` → `--phase reblend --version 5 --candidate mi2_affine_s50`. Feature added in `src/pdc26/features.py` (`FLIGHT_PREFIX` in `CAT_FEATURES`, `_flight_prefix()`); configs `src/configs/blend.json` + `blend_postproc.json`; reports `src/reports/blend_results.md`, `micro_iterations.md`, `improvement_round.md`.
 
 **Artifact:** `submissions/thoughtful-glove_v5.parquet`, 4,707,505 bytes, SHA256 `72dfbfae816f99faab2b71536b87db56edbe35adce0d461d44c162df74bac4da`; 344,841 rows = `submitting.parquet` (order-exact `MVT_ID_mvt`), 0 nulls, all finite, range 1.0–42,905.8 s, mean 1,038.5 s. Archived at `submissions/final/thoughtful-glove_v5.parquet` and committed to the repo.
+
+---
+
+## v6 — Final-phase validation submission (Task 18, 2026-10-11)
+
+Task `18-final_pipeline_validation`. One **validation-only** submission (human decision Q3-A: at most 1–2), to confirm the final-phase serving path introduces no regression versus v5. Same frozen model stack; the only differences from v5 are (a) features rebuilt from the dithered `final_ranking.parquet` and (b) predictions restricted to the Jan/Jul rows and mapped to `submitting.parquet` order.
+
+**Build.** `uv run python src/make_final_submission.py --emit-v6` → `submissions/thoughtful-glove_v6.parquet`, 344,841 rows = `submitting.parquet` (order-exact `MVT_ID_mvt`), 0 nulls, all finite, min floored to 1 s, `TAXITIME_SEC_mvt` float64; SHA256 `5805cdd9397201ff24680cb00403d7637dd34caeb1c0cc5d4fb6870925959525`, 4,707,521 bytes. Predictions are exactly a restriction of the validated `thoughtful-glove_final_v1.parquet` (mean 1042.1 s, median 963.1 s).
+
+**Upload.** `uv run --with minio python src/minio_transfer.py up submissions/thoughtful-glove_v6.parquet opensky/prc-2026-thoughtful-glove/` (Mac Mini, direct MinIO). Bucket object uploaded 2026-10-11 00:22:15 UTC; `_result.json` sidecar appeared +18 s later (00:22:33 UTC). 1 of 5 daily slots used on 2026-10-11.
+
+**Result** (`thoughtful-glove_v6.parquet_result.json`):
+
+| Quantity | Value |
+|---|---|
+| Status | `Succeeded` |
+| `used_pairs` | 344,841 / 344,841 |
+| Leaderboard RMSE | **393.2793 s** |
+| v5 leaderboard | 392.5911 s |
+| Delta | **+0.6882 s (+0.18%)** |
+| Within the 2% gate | **YES** |
+
+**Verdict: no serving regression.** Rebuilding every feature from the dithered final files and re-scoring with the frozen models reproduces v5's leaderboard performance to within 0.18% — inside the pre-registered 2% gate, so Task 20 proceeds without escalation. This matches the local per-MVT_ID comparison in `src/reports/final_pipeline_validation.md` §4d (Jan mean Δ +0.75%, Jul +0.01%; median per-row |Δ| ≈ 7–9 s, the ±12 s dither). The validation battery's adversarial-validation AUC is high (≈0.96 day-grouped) but attributable to METAR weather covariates and a frozen congestion-window units bug, **not** the predictive core (anchors AUC ≈ 0.56); v6 confirms the drift is harmless (report §6).
+
+---
+
+## Final submission (Task 20, 2026-10-12)
+
+The single official final submission: **`thoughtful-glove_final.parquet`**, uploaded to the team bucket `opensky/prc-2026-thoughtful-glove`.
+
+**Artifact choice (D1 — Option A: ship v1).** Task 19's hard-row experiment cleared its pre-registered gate **ACCEPT within 2025** (4-month analog 391.38 s vs 420.37 s) and built `thoughtful-glove_final_v2.parquet`, but its report **recommended v1**: the gate is a statement about the 2025 corrupted tail, and the audit's floor evidence (Jan/Jul leader 213.18 s < the 338.1 s floor a *perfect* base model would hit if the corruption transferred) says the 2026 scored truth is likely cleaner. Per that decision, the final submission is the **v1 lineage** (frozen v5 stack, features rebuilt from the dithered final files; Task 18). v2 remains a documented experiment artifact.
+
+**Lineage.** `submissions/final/thoughtful-glove_final.parquet` is a byte-identical copy of `submissions/final/thoughtful-glove_final_v1.parquet` (Task 18, `src/make_final_submission.py`; frozen `models/blend/` stack, blend 0.4094/0.5906 + `mi2_affine_s50`, floor at 1 s).
+
+**Pre-upload assertions (all PASS, scripted output):**
+
+| Check | Result |
+|---|---|
+| row count == `final_submitting.parquet` | PASS (670,790) |
+| `MVT_ID_mvt` order-exact | PASS |
+| 0 nulls | PASS |
+| all finite | PASS |
+| min ≥ 1 s | PASS (min 1.0) |
+| `TAXITIME_SEC_mvt` float64 | PASS |
+| copy SHA256 == source SHA256 | PASS |
+
+**Artifact.** 670,790 rows, 8,641,587 bytes, SHA256 `e326deac578d92329a28a08d3acb752e136ae66d6ce335f7cc7afe3dea4fc632`. Prediction stats: min 1.0 s, mean 1016.173 s, median 947.323 s, max 42,811.823 s.
+
+**Upload (exactly once).** `uv run --with minio python src/minio_transfer.py up submissions/final/thoughtful-glove_final.parquet opensky/prc-2026-thoughtful-glove/` (Mac Mini, direct MinIO). Bucket object `thoughtful-glove_final.parquet`, 8,641,587 bytes, timestamp **2026-10-12 03:51:28.675 UTC**.
+
+**Verification (mechanical).**
+- Bucket `ls` shows the object with the expected size (8,641,587 bytes).
+- Re-downloaded the object; SHA256 == local file (`e326deac…c632`) — round-trip identical.
+
+**Sidecar observations.** No `_result.json` or `_persist.json` sidecar appeared:
+- +13 s (03:51:41 UTC): none
+- +71 s (03:52:39 UTC): none
+- +600 s / ~10 min (04:01:28 UTC): none
+
+Consistent with the organizer's "no leaderboard on final_ranking.parquet". (Contrast: every ranking-board submission v1–v6 produced a `_result.json` and `_persist.json` within ~30 s.)
+
+**Human verification (H3).** Agent self-verification complete (bucket listing + SHA-256 round-trip). **Confirmed by Mike in the MinIO console 2026-10-12 13:09 +0800 (05:09:30 UTC)** — `thoughtful-glove_final.parquet` present at 8.2 MiB (measured 8,641,587 bytes = 8.241 MiB), upload timestamp 11:51 (2026-10-12 03:51:28 UTC). H3 satisfied, ahead of the 2026-10-13 evening checkpoint.
+
+**Archival.** Tracked copy committed under `submissions/final/thoughtful-glove_final.parquet` (commit `859a0ad`), mirroring how the v5 copy is tracked. Trackability verified with `git check-ignore -v` (matched negation pattern `!submissions/final/*.parquet`) and `git add --dry-run` (succeeds); the `v1`/`v2` payloads stay ignored (`submissions/final/thoughtful-glove_final_v*.parquet`).
 
 ---
 
