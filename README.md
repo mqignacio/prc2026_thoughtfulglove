@@ -7,7 +7,7 @@ reports, and the figures behind our final submission and the accompanying JOAS
 paper.
 
 **Final result:** leaderboard RMSE **392.59 s**, rank **#170 / 232 teams**
-(best of five submissions; official scoring API, 2026-10-07).
+(best of six submissions — five model iterations plus one validation probe; official scoring API, 2026-10-07).
 Month-blocked cross-validation of the same model: **333.02 s** (blended) and
 **331.00 s** with the accepted post-processing calibration.
 
@@ -361,7 +361,14 @@ in `assets/figures/`.
 
 Released under the **GNU General Public License v3.0** — see `LICENSE`.
 
-## 11. Citation
+## 11. Contributing / Reproducibility
+
+This repository is a competition artifact, not an actively maintained library.
+The README's reproduction sections (§6.4 and §7) provide every command needed to
+rebuild the results from source. Bug reports or questions can be filed as GitHub
+issues on the repository.
+
+## 12. Citation
 
 A paper describing this work is in preparation (JOAS). Citation details will
 be added here once available.
